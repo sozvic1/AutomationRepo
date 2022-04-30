@@ -1,4 +1,5 @@
-﻿using Automation.Core.Logging;
+﻿using Automation.Core.Components;
+using Automation.Core.Logging;
 using Automation.Extensions.Components;
 using Automation.Extensions.Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -83,6 +84,28 @@ namespace Automation.Core.Testing
         {
             this.logger = logger;
             return this;
+        }
+        public IFluent CreateFluentApi(string type)
+        {
+            //extract type
+            var t = Utilities.GetTypeByName(type);
+
+            // extract constructors
+            var ctr = t.GetConstructors();
+
+            //setup conditions
+            var isFluent = typeof(FluentBase).IsAssignableFrom(t);
+            var isRest = isFluent && ctr.Any(i => i.GetParameters().Any(p => p.ParameterType == typeof(HttpClient)));
+            var isFront = isFluent && ctr.Any(i => i.GetParameters().Any(p => p.ParameterType == typeof(IWebDriver)));
+            if(isRest)
+            {
+                return (IFluent)Activator.CreateInstance(t,new object[] {HttpClient,logger});
+            }
+            else if(isFront)
+            {
+                return (IFluent)Activator.CreateInstance(t, new object[] { Driver, logger });
+            }
+            throw new NotImplementedException($"implementation of {type} was not found");
         }
         private void SetUp()
         { 

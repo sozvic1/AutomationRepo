@@ -59,7 +59,9 @@ namespace Automation.Framework.RestApi.Components
         }
         private void Build(JToken dataRow)
         {
-           
+            firstName = $"{dataRow["firstMidName"]}";
+            lastName = $"{dataRow["lastName"]}";
+            enrollementDate = DateTime.Parse($"{dataRow["enrollmentDate"]}");
         }
     }
 }

@@ -33,15 +33,6 @@ namespace Automation.Core.Components
         public abstract T ChangeContext<T>(string application, ILogger logger);
 
         internal abstract T Create<T>(Type type, ILogger logger);
-        internal Type GetTypeByName(string type)
-        {
-            var assamblies = new List<Assembly>();
-            foreach (var assembly in Assembly.GetCallingAssembly().GetReferencedAssemblies())
-            {
-                assamblies.Add(Assembly.Load(assembly));
-            }
-            return assamblies.SelectMany(i => i.GetTypes()).
-            FirstOrDefault(i => i.FullName.Equals(type, StringComparison.OrdinalIgnoreCase));
-        }
+        
     }
 }
