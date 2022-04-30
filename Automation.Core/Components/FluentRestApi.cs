@@ -12,25 +12,39 @@ namespace Automation.Core.Components
         public FluentRestApi(HttpClient httpClient) : this(httpClient, new TraceLogger()) { }
         public FluentRestApi(HttpClient httpClient, ILogger logger):base(logger)
         {
-            HttpClient = httpClient;
+            HttpClient = httpClient??new HttpClient();
            
         }
         public HttpClient HttpClient  { get; }  
 
         public override T ChangeContext<T>(string application)
         {
-            throw new NotImplementedException();
+            HttpClient.BaseAddress = new Uri(application);
+            return Create<T>(null,null);
         }        
 
         public override T ChangeContext<T>(string application, ILogger logger)
         {
-            throw new NotImplementedException();
+            HttpClient.BaseAddress = new Uri(application);
+            return Create<T>(null,logger);
         }
-            
 
-        internal override T Create<T>(ILogger logger)
+        public override T ChangeContext<T>(string type, string application)
         {
-            throw new NotImplementedException();
+            var t = GetTypeByName(type);
+            HttpClient.BaseAddress = new Uri(application);
+            return Create<T>(t, null);
+        }
+
+        internal override T Create<T>(Type type,ILogger logger)
+        {
+            if (type == null)
+            {
+                type = typeof(T);
+            }
+            return logger == null ?
+                 (T)Activator.CreateInstance(type, new object[] { HttpClient }) :
+                 (T)Activator.CreateInstance(type, new object[] { HttpClient, logger });
         }
     }
 }

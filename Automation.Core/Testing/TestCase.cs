@@ -24,6 +24,7 @@ namespace Automation.Core.Testing
             logger = new TraceLogger();
         }
         public IWebDriver Driver { get; private set; }
+        public HttpClient HttpClient {get; private set; }
         public bool Actual { get; private set; }
         public abstract bool AutomationTest(IDictionary<string, object> testParams);
         public TestCase Execute()
@@ -31,7 +32,7 @@ namespace Automation.Core.Testing
             
             for (int i = 0; i < attempts; i++)
             {
-                Driver = Get();
+                SetUp();
                 try
                 {
 
@@ -83,16 +84,25 @@ namespace Automation.Core.Testing
             this.logger = logger;
             return this;
         }
-        private IWebDriver Get()
+        private void SetUp()
         { 
-            const string Driver = "driver";
+            const string DRIVER = "driver";
 
             var driverParams = new DriverParams { Binaries =".",Driver="CHROME"};
-            if(testParams?.ContainsKey(Driver)==true)
+            if($"{testParams[DRIVER]}".Equals("HTTP",StringComparison.OrdinalIgnoreCase))
             {
-                driverParams.Driver = $"{testParams[Driver]}";
+                HttpClient = new HttpClient();
+                return;
             }
-            return new WebDriverFactory(driverParams).Get();
+            else
+            {                
+               testParams[DRIVER] =string.Empty;
+            }
+            if(testParams?.ContainsKey(DRIVER) ==true)
+            {
+                driverParams.Driver = $"{testParams[DRIVER]}";
+            }
+            Driver = new WebDriverFactory(driverParams).Get();
         }
     }
 }
