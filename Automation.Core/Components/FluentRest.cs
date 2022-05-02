@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Automation.Core.Components
 {
-    public class FluentRestApi : FluentBase
+    public class FluentRest : FluentBase
     {
-        public FluentRestApi(HttpClient httpClient) : this(httpClient, new TraceLogger()) { }
-        public FluentRestApi(HttpClient httpClient, ILogger logger):base(logger)
+        public FluentRest(HttpClient httpClient) : this(httpClient, new TraceLogger()) { }
+        public FluentRest(HttpClient httpClient, ILogger logger):base(logger)
         {
             HttpClient = httpClient??new HttpClient();
            

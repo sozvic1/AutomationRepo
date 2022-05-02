@@ -16,7 +16,24 @@ namespace Automation.Testing.Containers
     public class StudentTests
     {
         [DataTestMethod]
-        [DataRow("{'driver':'CHROME','keyword':'Alexander','application':'https://gravitymvctestapplication.azurewebsites.net/Student'}")]
+        //[DataRow("" +
+        //    "{" +
+        //    "'driver':'CHROME'," +
+        //    "'keyword':" +
+        //    "'Alexander'," +
+        //    "'application':'https://gravitymvctestapplication.azurewebsites.net/Student'," +
+        //    "'fluent':'Automation.Core.Components.FluentUi'," +
+        //    "'students':'Automation.Framework.Ui.Pages.StudentsUi'" +
+        //    "}")]
+        [DataRow("" +
+           "{" +
+           "'driver':'HTTP'," +
+           "'keyword':" +
+           "'Alexander'," +
+           "'application':'https://gravitymvctestapplication.azurewebsites.net'," +
+           "'fluent':'Automation.Core.Components.FluentRest'," +
+           "'students':'Automation.Framework.RstApi.Pages.StudentsRest'" +
+           "}")]
         public void SearchStudentUiTest(string testParams)
         {
             var parametrs =JsonConvert.DeserializeObject<Dictionary<string,object>>(testParams);
@@ -24,6 +41,7 @@ namespace Automation.Testing.Containers
            
             Assert.IsTrue( actual);
         }
+      
 
         [DataTestMethod]
         [DataRow("{'driver':'CHROME','firstName':'csahrp','lastName':'student','keyword':'Alexander','application':'https://gravitymvctestapplication.azurewebsites.net/Student'}")]
@@ -48,12 +66,6 @@ namespace Automation.Testing.Containers
             // assert results
             Assert.IsTrue(actual);
         }
-        [TestMethod]
-        public void TempTest()
-        {
-            var studentRest = new FluentRestApi(new HttpClient()).ChangeContext<StudentsRest>("https://gravitymvctestapplication.azurewebsites.net").Students();
-            //var studentsRst = new StudentsRest(new System.Net.Http.HttpClient()).Students();
-            var s = studentRest.First().FirstName();
-        }
+     
     }
 }

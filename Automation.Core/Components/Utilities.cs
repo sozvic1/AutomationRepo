@@ -11,13 +11,16 @@ namespace Automation.Core.Components
     {
         public static Type GetTypeByName(string type)
         {
-            var assamblies = new List<Assembly>();
-            foreach (var assembly in Assembly.GetCallingAssembly().GetReferencedAssemblies())
+            var assemblyFiles = Directory.GetFiles(Environment.CurrentDirectory, "*.dll", SearchOption.AllDirectories);
+
+            var assemblies = new List<Assembly>();
+            foreach (var file in assemblyFiles)
             {
-                assamblies.Add(Assembly.Load(assembly));
+                assemblies.Add(Assembly.Load(AssemblyName.GetAssemblyName(file)));
             }
-            return assamblies.SelectMany(i => i.GetTypes()).
-            FirstOrDefault(i => i.FullName.Equals(type, StringComparison.OrdinalIgnoreCase));
+            return assemblies
+                .SelectMany(i => i.GetTypes())
+                .FirstOrDefault(i => i.FullName.Equals(type, StringComparison.OrdinalIgnoreCase));
         }
     }
 }
