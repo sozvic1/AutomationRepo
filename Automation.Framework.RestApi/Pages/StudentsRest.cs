@@ -12,8 +12,9 @@ using System.Threading.Tasks;
 
 namespace Automation.Framework.RestApi.Pages
 {
-    public class StudentsRest : FluentRestApi,IStudents
+    public class StudentsRest : FluentRest,IStudents
     {
+        private readonly IEnumerable<IStudent> students;
         public StudentsRest(HttpClient httpClient) : this (httpClient,new TraceLogger())
         {
         }
@@ -60,13 +61,24 @@ namespace Automation.Framework.RestApi.Pages
 
         public IEnumerable<IStudent> Students()
         {
+           return students;
+        }
+        private IEnumerable<IStudent> Build(string name)
+        {
             var response = HttpClient.GetAsync("/api/Students").GetAwaiter().GetResult();
             if (!response.IsSuccessStatusCode)
             {
                 return new IStudent[0];
             }
             var responseBody = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-           return JToken.Parse(responseBody).Select(i=>new StudentRestApi(HttpClient,i));
+            var s = JToken.Parse(responseBody).Select(i => new StudentRestApi(HttpClient, i));
+            
+            const StringComparison COMPARE = StringComparison.OrdinalIgnoreCase; 
+
+            return string.IsNullOrEmpty(name) 
+                ? s 
+                : s.Where(i => i.FirstName().Equals(name) ||
+            i.LastName().Equals(name));
         }
     }
 }

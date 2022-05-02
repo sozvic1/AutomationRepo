@@ -17,12 +17,13 @@ namespace Automation.Testing.Cases
     {
         public override bool AutomationTest(IDictionary<string, object> testParams)
         {
-            var keyword =$"{testParams["keyword"]}";
+            var keyword = $"{testParams["keyword"]}";
+            var fluent = $"{testParams["fluent"]}";
+            var students = $"{testParams["students"]}";
 
-          
 
-            return new FluentUi(Driver)
-                .ChangeContext<StudentsUi>($"{testParams["application"]}")
+            return  CreateFluentApi(fluent)
+                .ChangeContext<IStudents>(students, $"{testParams["application"]}")
                 .FindByName(keyword)
                 .Students()
                 .All(i=>i.FirstName().Equals(keyword) ||i.LastName().Equals(keyword));
