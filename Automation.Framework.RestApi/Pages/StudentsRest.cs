@@ -19,11 +19,14 @@ namespace Automation.Framework.RestApi.Pages
         {
         }
 
-        public StudentsRest(HttpClient httpClient, ILogger logger) : base(httpClient, logger)
+        public StudentsRest(HttpClient httpClient, ILogger logger) : this(httpClient, logger,string.Empty)
         {
         
         }
-
+        private StudentsRest(HttpClient httpClient, ILogger logger,string name) : base(httpClient, logger)
+        {
+            students = Build(name);
+        }
         public ICreateStudent Create()
         {
             throw new NotImplementedException();
@@ -31,7 +34,7 @@ namespace Automation.Framework.RestApi.Pages
 
         public IStudents FindByName(string name)
         {
-            throw new NotImplementedException();
+           return new StudentsRest(HttpClient, Logger, name);
         }
 
         public T Menu<T>(string menuName)
