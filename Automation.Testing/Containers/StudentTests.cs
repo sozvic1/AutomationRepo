@@ -16,15 +16,15 @@ namespace Automation.Testing.Containers
     public class StudentTests
     {
         [DataTestMethod]
-        //[DataRow("" +
-        //    "{" +
-        //    "'driver':'CHROME'," +
-        //    "'keyword':" +
-        //    "'Alexander'," +
-        //    "'application':'https://gravitymvctestapplication.azurewebsites.net/Student'," +
-        //    "'fluent':'Automation.Core.Components.FluentUi'," +
-        //    "'students':'Automation.Framework.Ui.Pages.StudentsUi'" +
-        //    "}")]
+        [DataRow("" +
+            "{" +
+            "'driver':'CHROME'," +
+            "'keyword':" +
+            "'Alexander'," +
+            "'application':'https://gravitymvctestapplication.azurewebsites.net/Student'," +
+            "'fluent':'Automation.Core.Components.FluentUi'," +
+            "'students':'Automation.Framework.Ui.Pages.StudentsUi'" +
+            "}")]
         [DataRow("" +
            "{" +
            "'driver':'HTTP'," +
@@ -32,7 +32,7 @@ namespace Automation.Testing.Containers
            "'Alexander'," +
            "'application':'https://gravitymvctestapplication.azurewebsites.net'," +
            "'fluent':'Automation.Core.Components.FluentRest'," +
-           "'students':'Automation.Framework.RstApi.Pages.StudentsRest'" +
+           "'students':'Automation.Framework.RestApi.Pages.StudentsRest'" +
            "}")]
         public void SearchStudentUiTest(string testParams)
         {
@@ -41,20 +41,26 @@ namespace Automation.Testing.Containers
            
             Assert.IsTrue( actual);
         }
-      
 
         [DataTestMethod]
-        [DataRow("{'driver':'CHROME','firstName':'csahrp','lastName':'student','keyword':'Alexander','application':'https://gravitymvctestapplication.azurewebsites.net/Student'}")]
-        public void CreateStudentUiTest(string testParams)
-        {
-            var parametrs = JsonConvert.DeserializeObject<Dictionary<string, object>>(testParams);
-            var actual = new CreateStudents().WithTestParams(parametrs).Execute().Actual;
-
-            Assert.IsTrue(actual);
-        }
-
-        [DataTestMethod]
-        [DataRow("{'driver':'CHROME','keyword':'Alexander','application':'https://gravitymvctestapplication.azurewebsites.net/Student'}")]
+        [DataRow("" +
+            "{" +
+            "'driver':'CHROME'," +
+            "'keyword':" +
+            "'Alexander'," +
+            "'application':'https://gravitymvctestapplication.azurewebsites.net/Student'," +
+            "'fluent':'Automation.Core.Components.FluentUi'," +
+            "'students':'Automation.Framework.Ui.Pages.StudentsUi'" +
+            "}")]
+        [DataRow("" +
+           "{" +
+           "'driver':'HTTP'," +
+           "'keyword':" +
+           "'Alexander'," +
+           "'application':'https://gravitymvctestapplication.azurewebsites.net'," +
+           "'fluent':'Automation.Core.Components.FluentRest'," +
+           "'students':'Automation.Framework.RestApi.Pages.StudentsRest'" +
+           "}")]
         public void StudentDetailsTest(string testParams)
         {
             // generate  test-parameters
@@ -66,6 +72,18 @@ namespace Automation.Testing.Containers
             // assert results
             Assert.IsTrue(actual);
         }
+
+        [DataTestMethod]
+        [DataRow("{'driver':'CHROME','firstName':'csahrp','lastName':'student','keyword':'Alexander','application':'https://gravitymvctestapplication.azurewebsites.net/Student'}")]
+        public void CreateStudentUiTest(string testParams)
+        {
+            var parametrs = JsonConvert.DeserializeObject<Dictionary<string, object>>(testParams);
+            var actual = new CreateStudents().WithTestParams(parametrs).Execute().Actual;
+
+            Assert.IsTrue(actual);
+        }
+
+     
      
     }
 }

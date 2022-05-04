@@ -1,4 +1,5 @@
-﻿using Automation.Core.Components;
+﻿using Automation.Api.Pages;
+using Automation.Core.Components;
 using Automation.Core.Testing;
 using Automation.Framework.Ui.Pages;
 using System;
@@ -14,11 +15,14 @@ namespace Automation.Testing.Cases
         public override bool AutomationTest(IDictionary<string, object> testParams)
         {
             var keyword = $"{testParams["keyword"]}";
+            var fluent = $"{testParams["fluent"]}";
+            var students = $"{testParams["students"]}";
 
+           
             // perform test case
-            var student = new FluentUi(Driver)
-                .ChangeContext<StudentsUi>($"{testParams["application"]}")
-                .FindByName(keyword)
+            var student =  CreateFluentApi(fluent)
+               .ChangeContext<IStudents>(students, $"{testParams["application"]}")
+               .FindByName(keyword)
                 .Students()
                 .First();
 
