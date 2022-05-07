@@ -43,15 +43,15 @@ namespace Automation.Testing.Containers
         }
 
         [DataTestMethod]
-        [DataRow("" +
-            "{" +
-            "'driver':'CHROME'," +
-            "'keyword':" +
-            "'Alexander'," +
-            "'application':'https://gravitymvctestapplication.azurewebsites.net/Student'," +
-            "'fluent':'Automation.Core.Components.FluentUi'," +
-            "'students':'Automation.Framework.Ui.Pages.StudentsUi'" +
-            "}")]
+        //[DataRow("" +
+        //    "{" +
+        //    "'driver':'CHROME'," +
+        //    "'keyword':" +
+        //    "'Alexander'," +
+        //    "'application':'https://gravitymvctestapplication.azurewebsites.net/Student'," +
+        //    "'fluent':'Automation.Core.Components.FluentUi'," +
+        //    "'students':'Automation.Framework.Ui.Pages.StudentsUi'" +
+        //    "}")]
         [DataRow("" +
            "{" +
            "'driver':'HTTP'," +
@@ -74,7 +74,26 @@ namespace Automation.Testing.Containers
         }
 
         [DataTestMethod]
-        [DataRow("{'driver':'CHROME','firstName':'csahrp','lastName':'student','keyword':'Alexander','application':'https://gravitymvctestapplication.azurewebsites.net/Student'}")]
+        //[DataRow("" +
+        //    "{" +
+        //    "'driver':'CHROME'," +
+        //    "'firstName':'csahrp'," +
+        //    "'lastName':'student'," +
+        //    "'keyword':'Alexander'," +
+        //    "'application':'https://gravitymvctestapplication.azurewebsites.net/Student'," +
+        //    "'fluent':'Automation.Core.Components.FluentUi'," +
+        //    "'students':'Automation.Framework.Ui.Pages.StudentsUi'" + 
+        //    "}")]
+        [DataRow("" +
+            "{" +
+            "'driver':'HTTP'," +
+            "'firstName':'csahrp'," +
+            "'lastName':'student'," +
+            "'keyword':'Alexander'," +
+            "'application':'https://gravitymvctestapplication.azurewebsites.net/Student'," +
+            "'fluent':'Automation.Core.Components.FluentRest'," +
+            "'students':'Automation.Framework.RestApi.Pages.StudentsRest'" +
+            "}")]
         public void CreateStudentUiTest(string testParams)
         {
             var parametrs = JsonConvert.DeserializeObject<Dictionary<string, object>>(testParams);
