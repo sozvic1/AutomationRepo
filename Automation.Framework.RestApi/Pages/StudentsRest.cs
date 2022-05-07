@@ -29,7 +29,7 @@ namespace Automation.Framework.RestApi.Pages
         }
         public ICreateStudent Create()
         {
-            throw new NotImplementedException();
+            return new CreateStudentRest(HttpClient,Logger);
         }
 
         public IStudents FindByName(string name)
@@ -74,14 +74,14 @@ namespace Automation.Framework.RestApi.Pages
                 return new IStudent[0];
             }
             var responseBody = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            var s = JToken.Parse(responseBody).Select(i => new StudentRestApi(HttpClient, i));
+            var s = JToken.Parse(responseBody).Select(i => new StudentRest(HttpClient, i));
             
             const StringComparison COMPARE = StringComparison.OrdinalIgnoreCase; 
 
             return string.IsNullOrEmpty(name) 
                 ? s 
-                : s.Where(i => i.FirstName().Equals(name) ||
-            i.LastName().Equals(name));
+                : s.Where(i => i.FirstName().Equals(name, COMPARE) ||
+            i.LastName().Equals(name, COMPARE));
         }
     }
 }
